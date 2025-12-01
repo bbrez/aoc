@@ -1,0 +1,6 @@
+# Rust build artifacts
+target/
+
+# Ignore everything in input folders
+**/input/*
+!**/input/example.txt
