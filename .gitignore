@@ -2,5 +2,6 @@
 target/
 
 # Ignore everything in input folders
-**/input/*
-!**/input/example.txt
+**/inputs/**/*
+!**/inputs/**/
+!**/inputs/**/example.txt

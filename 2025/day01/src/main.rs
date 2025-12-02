@@ -70,6 +70,6 @@ fn process_file(file_path: &str) {
 }
 
 fn main() {
-    process_file("input/example.txt");
-    process_file("input/real.txt");
+    process_file("input/day01/example.txt");
+    process_file("input/day01/real.txt");
 }
