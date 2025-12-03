@@ -1,6 +1,6 @@
-use std::{fs::read_to_string, path::Path};
+use common::{expect, read_input};
 
-fn part1(commands: Vec<String>) {
+fn part1(commands: Vec<String>) -> i32 {
     let mut state = 50;
     let mut count = 0;
 
@@ -20,10 +20,10 @@ fn part1(commands: Vec<String>) {
         }
     });
 
-    println!("Final state: {}, Count of 0s: {}", state, count);
+    count
 }
 
-fn part2(commands: Vec<String>) {
+fn part2(commands: Vec<String>) -> i32 {
     let mut state = 50;
     let mut count = 0;
 
@@ -53,23 +53,26 @@ fn part2(commands: Vec<String>) {
         }
     });
 
-    println!("Final state: {}, Total wraps: {}", state, count);
-}
-
-fn process_file(file_path: &str) {
-    let path = Path::new(file_path);
-    if path.exists() {
-        let commands: Vec<String> = read_to_string(path)
-            .expect("File can't be read")
-            .lines()
-            .map(String::from)
-            .collect();
-        part1(commands.clone());
-        part2(commands.clone());
-    }
+    count
 }
 
 fn main() {
-    process_file("input/day01/example.txt");
-    process_file("input/day01/real.txt");
+    let example_input = read_input("inputs/day01/example.txt", |s| String::from(s));
+    let real_input = read_input("inputs/day01/real.txt", |s| String::from(s));
+
+    println!("Part 1");
+    if let Some(input) = &example_input {
+        expect(part1(input.clone()), None);
+    }
+    if let Some(input) = &real_input {
+        expect(part1(input.clone()), None);
+    }
+
+    println!("Part 2");
+    if let Some(input) = &example_input {
+        expect(part2(input.clone()), None);
+    }
+    if let Some(input) = &real_input {
+        expect(part2(input.clone()), None);
+    }
 }

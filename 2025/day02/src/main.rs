@@ -1,6 +1,6 @@
-use std::{fs::read_to_string, path::Path};
+use common::{expect, read_input};
 
-fn part1(ranges: Vec<Vec<u64>>) {
+fn part1(ranges: Vec<Vec<u64>>) -> u64 {
     let mut sum = 0;
 
     ranges.iter().for_each(|range| {
@@ -25,10 +25,10 @@ fn part1(ranges: Vec<Vec<u64>>) {
         }
     });
 
-    println!("Part 1: Sum of all double numbers in ranges = {}", sum);
+    sum
 }
 
-fn part2(ranges: Vec<Vec<u64>>) {
+fn part2(ranges: Vec<Vec<u64>>) -> u64 {
     let mut sum = 0;
 
     ranges.iter().for_each(|range| {
@@ -63,46 +63,39 @@ fn part2(ranges: Vec<Vec<u64>>) {
         }
     });
 
-    println!("Part 2: Sum of all repeated numbers in ranges = {}", sum);
+    sum
 }
 
-fn process_file(file_path: &str) {
-    println!("File: {}", file_path);
-
-    let path = Path::new(file_path);
-    if !path.exists() {
-        println!("File not found!");
-        return;
-    }
-
-    let lines: Vec<Vec<Vec<u64>>> = read_to_string(path)
-        .expect("File can't be read")
-        .lines()
-        .map(String::from)
-        .map(|line| {
-            line.trim()
-                .to_string()
-                .split(",")
-                .map(|range| {
-                    range
-                        .split("-")
-                        .map(|num| num.parse::<u64>().unwrap())
-                        .collect()
-                })
+fn parse_line(line: &str) -> Vec<Vec<u64>> {
+    line.trim()
+        .split(",")
+        .map(|range| {
+            range
+                .split("-")
+                .map(|num| num.parse::<u64>().unwrap())
                 .collect()
         })
-        .collect();
-
-    if lines.len() > 1 {
-        panic!("Only a single line was expected")
-    }
-
-    let ranges = &lines[0];
-    part1(ranges.clone());
-    part2(ranges.clone());
+        .collect()
 }
 
 fn main() {
-    process_file("input/day02/example.txt");
-    process_file("input/day02/real.txt");
+    let example_input =
+        read_input("inputs/day02/example.txt", parse_line).map(|lines| lines[0].clone());
+    let real_input = read_input("inputs/day02/real.txt", parse_line).map(|lines| lines[0].clone());
+
+    println!("Part 1");
+    if let Some(input) = &example_input {
+        expect(part1(input.clone()), None);
+    }
+    if let Some(input) = &real_input {
+        expect(part1(input.clone()), None);
+    }
+
+    println!("Part 2");
+    if let Some(input) = &example_input {
+        expect(part2(input.clone()), None);
+    }
+    if let Some(input) = &real_input {
+        expect(part2(input.clone()), None);
+    }
 }
