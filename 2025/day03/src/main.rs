@@ -31,27 +31,24 @@ fn part2(input: Vec<Vec<u32>>) -> u64 {
     let mut sum = 0;
 
     input.iter().for_each(|line| {
+        let mut to_remove = line.len() - 12;
         let mut nums: Vec<u64> = Vec::new();
 
-        let it = line.iter().rev();
-        it.for_each(|digit| {
-            if nums.len() < 12 {
-                nums.push(digit.clone().into());
-                return;
-            }
-
-            let first = nums.last().unwrap();
-            if (*digit as u64) > *first {
-                if let Some(&min) = nums.iter().min() {
-                    if let Some(pos) = nums.iter().rposition(|&d| d == min) {
-                        nums.remove(pos);
-                    }
+        line.iter().for_each(|digit| {
+            while let Some(&last) = nums.last() {
+                if to_remove > 0 && (*digit as u64) > last {
+                    nums.pop();
+                    to_remove -= 1;
+                } else {
+                    break;
                 }
             }
+
+            nums.push(digit.clone() as u64);
         });
 
-        let num = nums.iter().rev().fold(0, |acc, dig| acc * 10 + dig);
-        println!("Num: {}", num);
+        nums.truncate(12);
+        let num = nums.iter().fold(0, |acc, n| acc * 10 + n);
         sum += num
     });
 
@@ -64,8 +61,7 @@ fn parse_line(line: &str) -> Vec<u32> {
 
 fn main() {
     let example_input = read_input("inputs/day03/example.txt", parse_line);
-    // let real_input = read_input("inputs/day03/real.txt", parse_line);
-    let real_input: Option<Vec<Vec<u32>>> = None;
+    let real_input = read_input("inputs/day03/real.txt", parse_line);
 
     println!("Part 1");
     if let Some(input) = &example_input {
