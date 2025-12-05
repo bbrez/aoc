@@ -2,5 +2,5 @@
 members = ["common",
     "day01",
     "day02"
- , "day03", "scaffold"]
+ , "day03", "scaffold", "day04"]
 resolver = "2"
